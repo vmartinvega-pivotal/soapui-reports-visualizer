@@ -67,11 +67,11 @@
       <td><b>Director</b></td>
       <td><b>Genre</b></td>
     </tr>
-    <c:forEach items="${requestScope.movies}" var="movie">
+    <c:forEach items="${requestScope.reports}" var="report">
       <tr>
-        <td>${ movie.title }</td>
-        <td>${ movie.director }</td>
-        <td>${ movie.genre }</td>
+        <td>${ report.artifactId }</td>
+        <td>${ report.groupId }</td>
+        <td>${ report.url }</td>
       </tr>
     </c:forEach>
   </table>

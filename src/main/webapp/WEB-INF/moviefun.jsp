@@ -71,7 +71,7 @@
 
   <h1>Moviefun</h1>
 
-  <form class="movie-input-form form-inline" action="moviefun"
+  <!-- ><form class="movie-input-form form-inline" action="moviefun"
         method="post">
     <p>Add Movie</p>
     <input type="text" name="title" placeholder="Title" size="29"/> <input
@@ -81,29 +81,26 @@
       type="text" name="year" placeholder="Year" size="4"
       style="width: 110px;"/> <input type="submit" name="action"
                                      class="btn btn-primary" value="Add"/>
-  </form>
+  </form>-->
 
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
-      <th>Title</th>
-      <th>Director</th>
-      <th>Genre</th>
-      <th>Rating</th>
-      <th>Year</th>
+      <th>Artifact Id</th>
+      <th>Group Id</th>
+      <th>Environment</th>
+      <th>Url</th>
       <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${movies}" var="movie">
+    <c:forEach items="${reports}" var="report">
       <tr>
-        <td><c:out value="${movie.title}"/></td>
-        <td><c:out value="${movie.director}"/></td>
-        <td><c:out value="${movie.genre}"/></td>
-        <td><c:out value="${movie.rating}"/></td>
-        <td><c:out value="${movie.year}"/></td>
-        <td><a href="?action=Remove&id=${movie.id}"><i
-            class="icon-trash"></i></a></td>
+        <td><c:out value="${report.artifactId}"/></td>
+        <td><c:out value="${report.groupId}"/></td>
+        <td><c:out value="${report.environment}"/></td>
+        <td><c:out value="${report.url}"/></td>
+        <td><a href="?action=Remove&id=${report.url}"><i class="icon-trash"></i></a></td>
       </tr>
     </c:forEach>
     </tbody>

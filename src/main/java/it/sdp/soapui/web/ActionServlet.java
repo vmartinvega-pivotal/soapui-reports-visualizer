@@ -38,7 +38,7 @@ public class ActionServlet extends HttpServlet {
     public static int PAGE_SIZE = 5;
 
     @EJB
-    private MoviesBean moviesBean;
+    private ReportsBean reportsBean;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,7 +53,7 @@ public class ActionServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if ("Add".equals(action)) {
+        /*if ("Add".equals(action)) {
 
             String title = request.getParameter("title");
             String director = request.getParameter("director");
@@ -63,7 +63,7 @@ public class ActionServlet extends HttpServlet {
 
             Movie movie = new Movie(title, director, genre, rating, year);
 
-            moviesBean.addMovie(movie);
+            reportsBean.addMovie(movie);
             response.sendRedirect("moviefun");
             return;
 
@@ -71,24 +71,24 @@ public class ActionServlet extends HttpServlet {
 
             String[] ids = request.getParameterValues("id");
             for (String id : ids) {
-                moviesBean.deleteMovieId(new Long(id));
+            	reportsBean.deleteMovieId(new Long(id));
             }
 
             response.sendRedirect("moviefun");
             return;
 
-        } else {
+        } else {*/
             String key = request.getParameter("key");
             String field = request.getParameter("field");
 
             int count = 0;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                count = moviesBean.countAll();
+                count = reportsBean.countAll();
                 key = "";
                 field = "";
             } else {
-                count = moviesBean.count(field, key);
+                count = reportsBean.count(field, key);
             }
 
             int page = 1;
@@ -112,12 +112,12 @@ public class ActionServlet extends HttpServlet {
             }
 
             int start = (page - 1) * PAGE_SIZE;
-            List<Movie> range;
+            List<Report> range;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                range = moviesBean.findAll(start, PAGE_SIZE);
+                range = reportsBean.findAll(start, PAGE_SIZE);
             } else {
-                range = moviesBean.findRange(field, key, start, PAGE_SIZE);
+                range = reportsBean.findRange(field, key, start, PAGE_SIZE);
             }
 
             int end = start + range.size();
@@ -127,10 +127,10 @@ public class ActionServlet extends HttpServlet {
             request.setAttribute("end", end);
             request.setAttribute("page", page);
             request.setAttribute("pageCount", pageCount);
-            request.setAttribute("movies", range);
+            request.setAttribute("reports", range);
             request.setAttribute("key", key);
             request.setAttribute("field", field);
-        }
+        //}
 
         request.getRequestDispatcher("WEB-INF/moviefun.jsp").forward(request, response);
     }

@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.sdp.soapui.nexus;
+package it.sdp.soapui.web;
 
 import java.io.Serializable;
 
 //@Entity
-public class ReportEntry implements Serializable {
+public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

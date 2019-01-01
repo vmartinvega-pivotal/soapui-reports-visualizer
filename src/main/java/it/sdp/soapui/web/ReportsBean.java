@@ -17,50 +17,44 @@
 package it.sdp.soapui.web;
 
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MoviesBean {
-
-    public Movie find(Long id) {
-        return new Movie();
+public class ReportsBean {
+	
+	private ArrayList<Report> reports = new ArrayList<Report>();
+    
+    public void addReport(Report report) {
+    	reports.add(report);
     }
 
-    public void addMovie(Movie movie) {
-        
+    public List<Report> getReports() {
+    	return reports;
     }
 
-    public void editMovie(Movie movie) {
-        
-    }
-
-    public void deleteMovie(Movie movie) {
-        
-    }
-
-    public void deleteMovieId(long id) {
-    }
-
-    public List<Movie> getMovies() {
-        return new ArrayList<Movie>();
-    }
-
-    public List<Movie> findAll(int firstResult, int maxResults) {
-    	return new ArrayList<Movie>();
+    public List<Report> findAll(int firstResult, int maxResults) {
+    	ArrayList<Report> result = new ArrayList<Report>();
+    	int end = firstResult + maxResults;
+    	if (end > reports.size()) {
+    		end = reports.size();
+    	}
+    	for (int index = firstResult; index < end; index++) {
+    		result.add(reports.get(index));
+    	}
+    	return result;
     }
 
     public int countAll() {
-        return 0;
+        return reports.size();
     }
 
     public int count(String field, String searchTerm) {
        return 0;
     }
 
-    public List<Movie> findRange(String field, String searchTerm, int firstResult, int maxResults) {
-    	return new ArrayList<Movie>();
+    public List<Report> findRange(String field, String searchTerm, int firstResult, int maxResults) {
+    	return new ArrayList<Report>();
     }
 
     public void clean() {
