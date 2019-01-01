@@ -53,86 +53,60 @@ public class ActionServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        /*if ("Add".equals(action)) {
+        String key = request.getParameter("key");
+        String field = request.getParameter("field");
 
-            String title = request.getParameter("title");
-            String director = request.getParameter("director");
-            String genre = request.getParameter("genre");
-            int rating = Integer.parseInt(request.getParameter("rating"));
-            int year = Integer.parseInt(request.getParameter("year"));
+        int count = 0;
 
-            Movie movie = new Movie(title, director, genre, rating, year);
+        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
+            count = reportsBean.countAll();
+            key = "";
+            field = "";
+        } else {
+            count = reportsBean.count(field, key);
+        }
 
-            reportsBean.addMovie(movie);
-            response.sendRedirect("moviefun");
-            return;
+        int page = 1;
 
-        } else if ("Remove".equals(action)) {
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch (Exception e) {
+        }
 
-            String[] ids = request.getParameterValues("id");
-            for (String id : ids) {
-            	reportsBean.deleteMovieId(new Long(id));
-            }
+        int pageCount = (count / PAGE_SIZE);
+        if (pageCount == 0 || count % PAGE_SIZE != 0) {
+            pageCount++;
+        }
 
-            response.sendRedirect("moviefun");
-            return;
+        if (page < 1) {
+            page = 1;
+        }
 
-        } else {*/
-            String key = request.getParameter("key");
-            String field = request.getParameter("field");
+        if (page > pageCount) {
+            page = pageCount;
+        }
 
-            int count = 0;
+        int start = (page - 1) * PAGE_SIZE;
+        List<Report> range;
 
-            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                count = reportsBean.countAll();
-                key = "";
-                field = "";
-            } else {
-                count = reportsBean.count(field, key);
-            }
+        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
+            range = reportsBean.findAll(start, PAGE_SIZE);
+        } else {
+            range = reportsBean.findRange(field, key, start, PAGE_SIZE);
+        }
 
-            int page = 1;
+        int end = start + range.size();
 
-            try {
-                page = Integer.parseInt(request.getParameter("page"));
-            } catch (Exception e) {
-            }
+        request.setAttribute("count", count);
+        request.setAttribute("start", start + 1);
+        request.setAttribute("end", end);
+        request.setAttribute("page", page);
+        request.setAttribute("pageCount", pageCount);
+        request.setAttribute("reports", range);
+        request.setAttribute("key", key);
+        request.setAttribute("field", field);
 
-            int pageCount = (count / PAGE_SIZE);
-            if (pageCount == 0 || count % PAGE_SIZE != 0) {
-                pageCount++;
-            }
-
-            if (page < 1) {
-                page = 1;
-            }
-
-            if (page > pageCount) {
-                page = pageCount;
-            }
-
-            int start = (page - 1) * PAGE_SIZE;
-            List<Report> range;
-
-            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
-                range = reportsBean.findAll(start, PAGE_SIZE);
-            } else {
-                range = reportsBean.findRange(field, key, start, PAGE_SIZE);
-            }
-
-            int end = start + range.size();
-
-            request.setAttribute("count", count);
-            request.setAttribute("start", start + 1);
-            request.setAttribute("end", end);
-            request.setAttribute("page", page);
-            request.setAttribute("pageCount", pageCount);
-            request.setAttribute("reports", range);
-            request.setAttribute("key", key);
-            request.setAttribute("field", field);
-        //}
-
-        request.getRequestDispatcher("WEB-INF/moviefun.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/reports.jsp").forward(request, response);
     }
 
 }

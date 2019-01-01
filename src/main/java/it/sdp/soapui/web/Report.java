@@ -18,7 +18,6 @@ package it.sdp.soapui.web;
 
 import java.io.Serializable;
 
-//@Entity
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +26,7 @@ public class Report implements Serializable {
     private String groupId;
     private String artifactId;
     private String environment;
+    private boolean successful = true;
     
 	public String getUrl() {
 		return url;
@@ -51,5 +51,11 @@ public class Report implements Serializable {
 	}
 	public void setEnvironment(String environment) {
 		this.environment = environment;
+	}
+	public boolean isSuccessful() {
+		return successful;
+	}
+	public void setSuccessful(boolean successful) {
+		this.successful = successful;
 	}
 }

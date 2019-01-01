@@ -21,6 +21,8 @@ public class HomeController {
 
     @GetMapping("/setup")
     public String setup(Map<String, Object> model) {
+    	reportsBean.clean();
+    	
     	Report report = new Report ();
     	report.setArtifactId("domiciliazioni");
     	report.setGroupId("it.sdp");
