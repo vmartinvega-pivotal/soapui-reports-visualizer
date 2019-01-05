@@ -45,7 +45,7 @@
 
   <p>Please select one of the following links:</p>
   <a href="setup">Load</a> - Loads reports from nexus<br/>
-  <a href="reports">View</a> - View reports<br/>
+  <a href="artifacts">View Reports</a> - View reports<br/>
 
 </div>
 <!-- /container -->

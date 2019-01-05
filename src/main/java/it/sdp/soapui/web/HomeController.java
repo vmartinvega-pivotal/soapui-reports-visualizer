@@ -28,6 +28,8 @@ public class HomeController {
     	report.setGroupId("it.sdp");
     	report.setEnvironment("coll");
     	report.setUrl("https://algo.com");
+    	report.setNumber(1);
+    	report.setDate("2018-01-23 12:54");
     	reportsBean.addReport(report);
     	reportsBean.addReport(report);
     	reportsBean.addReport(report);

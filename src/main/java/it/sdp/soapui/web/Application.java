@@ -21,4 +21,9 @@ public class Application {
     public ServletRegistrationBean actionServletRegistration(ActionServlet actionServlet) {
         return new ServletRegistrationBean(actionServlet, "/reports/*");
     }
+    
+    @Bean
+    public ServletRegistrationBean artifactServletRegistration(ArtifactServlet artifactServlet) {
+        return new ServletRegistrationBean(artifactServlet, "/artifacts/*");
+    }
 }

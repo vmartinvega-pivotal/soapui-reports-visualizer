@@ -36,50 +36,43 @@
       	<span class="icon-bar"></span> 
       	<span class="icon-bar"></span>
       </a> 
-      <a class="brand" href="/artifacts">Reports</a>
+      <a class="brand" href="/">Home</a>
       <!--/.nav-collapse -->
     </div>
   </div>
 </div>
 
 <div class="container">
-
-  <h3>Reports for <c:out value="${groupid}"/>  <c:out value="${artifactid}"/></h3>
+  
+  <h3>Reports grouped by Artifact Id</h3>
 
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
-      <th>Environment</th>
-      <th>Date</th>
-      <th>Status</th>
+      <th>Artifact Id</th>
+      <th>Group Id</th>
+      <th>Number of Reports</th>
       <th>View</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${reports}" var="report">
       <tr>
-        <td><c:out value="${report.environment}"/></td>
-        <td><c:out value="${report.date}"/></td>
-        <c:choose>
-		    <c:when test="${report.successful}">
-				<td>Successfull</td>        
-		    </c:when>    
-		    <c:otherwise>
-		        <td>Failed</td> 
-		    </c:otherwise>
-		</c:choose>
-        <td><a href="${report.url}" target="_blank"><i class="icon-eye-open"></i></a></td>
+        <td><c:out value="${report.artifactId}"/></td>
+        <td><c:out value="${report.groupId}"/></td>
+        <td><c:out value="${report.number}"/></td>
+        <td><a href="reports?artifactid=${report.artifactId}&groupid=${report.groupId}"><i class="icon-eye-open"></i></a></td>
       </tr>
     </c:forEach>
     </tbody>
   </table>
   <c:if test="${count > 0}">
     <c:if test="${page > 1}">
-      <a href="<c:url value="reports"><c:param name="page" value="${page - 1}"/><c:param name="field" value="${field}"/><c:param name="key" value="${key}"/></c:url>">&lt; Prev</a>&nbsp;
+      <a href="<c:url value="reports"><c:param name="page" value="${page - 1}"/></c:url>">&lt; Prev</a>&nbsp;
     </c:if>
     Showing records ${start} to ${end} of ${count}
     <c:if test="${page < pageCount}">
-      &nbsp;<a href="<c:url value="reports"><c:param name="page" value="${page + 1}"/><c:param name="field" value="${field}"/><c:param name="key" value="${key}"/></c:url>">Next &gt;</a>
+      &nbsp;<a href="<c:url value="reports"><c:param name="page" value="${page + 1}"/></c:url>">Next &gt;</a>
     </c:if>
   </c:if>
 </div>

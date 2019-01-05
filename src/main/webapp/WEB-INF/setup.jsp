@@ -42,9 +42,7 @@
 
 <div class="container">
 
-  <h1>SoapUi Reports</h1>
-
-  <h3>The SoapUi reports were loaded from nexus.</h3>
+  <h3>The reports were loaded from nexus</h3>
   <a href="/">Home</a>
 </div>
 <!-- /container -->

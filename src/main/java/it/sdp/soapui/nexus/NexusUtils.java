@@ -27,6 +27,7 @@ public class NexusUtils {
         			if (item.getDownloadUrl().trim().contains("FinalReports/html/")) {
         				Report report = new Report();
         				report.setUrl(item.getDownloadUrl());
+        				// Formato: GROUPID_ARTIFACTID_YYYYMMDDHHMM_ENVIRONMENT_VERSION.html
         				result.add(report);
         				System.out.println(item.getDownloadUrl());
         			}
