@@ -44,7 +44,9 @@
 
 <div class="container">
 
-  <h3>Reports for <c:out value="${groupid}"/>  <c:out value="${artifactid}"/></h3>
+  <h3>Reports</h3>
+  <h4>GroupId: <c:out value="${groupid}"/></h4>
+  <h4>ArtifactId: <c:out value="${artifactid}"/></h4>
 
   <table class="table table-striped table-bordered">
     <thead>
@@ -77,11 +79,11 @@
   </table>
   <c:if test="${count > 0}">
     <c:if test="${page > 1}">
-      <a href="<c:url value="reports"><c:param name="page" value="${page - 1}"/><c:param name="field" value="${field}"/><c:param name="key" value="${key}"/></c:url>">&lt; Prev</a>&nbsp;
+      <a href="<c:url value="reports"><c:param name="page" value="${page - 1}"/><c:param name="artifactid" value="${artifactid}"/><c:param name="groupid" value="${groupid}"/></c:url>">&lt; Prev</a>&nbsp;
     </c:if>
     Showing records ${start} to ${end} of ${count}
     <c:if test="${page < pageCount}">
-      &nbsp;<a href="<c:url value="reports"><c:param name="page" value="${page + 1}"/><c:param name="field" value="${field}"/><c:param name="key" value="${key}"/></c:url>">Next &gt;</a>
+      &nbsp;<a href="<c:url value="reports"><c:param name="page" value="${page + 1}"/><c:param name="artifactid" value="${artifactid}"/><c:param name="groupid" value="${groupid}"/></c:url>">Next &gt;</a>
     </c:if>
   </c:if>
 </div>

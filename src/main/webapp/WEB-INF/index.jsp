@@ -41,7 +41,7 @@
 
 <div class="container">
 
-  <h1>SoapUi Reports</h1>
+  <h3>SoapUi Reports</h3>
 
   <p>Please select one of the following links:</p>
   <a href="setup">Load</a> - Loads reports from nexus<br/>

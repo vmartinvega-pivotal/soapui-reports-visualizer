@@ -51,27 +51,25 @@ public class NexusUtils {
 	public Vector<Report> readAllReports() throws SoapUtilException {
 		Vector<Report> result = new Vector<Report>();
 		
-		Report report = new Report ();
-    	report.setArtifactId("domiciliazioni");
-    	report.setGroupId("it.sdp");
-    	report.setEnvironment("coll");
-    	report.setUrl("https://algo.com");
-    	report.setNumber(1);
-    	report.setDate("2018-01-23 12:54");
-    	report.setVersion("1.1.2");
-    	result.add(report);
-    	    	    	
-    	Report report1 = new Report ();
-    	report1.setArtifactId("domiciliazioni");
-    	report1.setGroupId("it.sdp");
-    	report1.setEnvironment("coll");
-    	report1.setUrl("https://algo.com");
-    	report1.setNumber(1);
-    	report1.setDate("2018-01-23 12:54");
-    	report1.setVersion("1.1.3");
-    	result.add(report1);
+		result.add(createReport("it.sdp", "domiciliazioni", "coll", "https://algo.com", "2018-01-23 12:54", "1.1.2"));
+		result.add(createReport("it.sdp", "domiciliazioni", "coll", "https://algo.com", "2018-01-24 12:54", "1.1.2"));
+		result.add(createReport("it.sdp", "domiciliazioni2", "coll", "https://algo.com", "2018-01-25 12:54", "1.1.2"));
     	
     	return result;
+	}
+	
+	private Report createReport(String groupId, String artifactId, String env, String url, String date, String version) {
+		Report report = new Report();
+		
+		report.setArtifactId(artifactId);
+    	report.setGroupId(groupId);
+    	report.setEnvironment(env);
+    	report.setUrl(url);
+    	report.setNumber(1);
+    	report.setDate(date);
+    	report.setVersion(version);
+    	
+		return report;
 	}
 			
 	public Vector<Report> readAllReports(String url, String username, String password) throws SoapUtilException {

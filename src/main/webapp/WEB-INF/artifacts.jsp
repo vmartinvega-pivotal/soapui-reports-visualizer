@@ -44,13 +44,14 @@
 
 <div class="container">
   
-  <h3>Reports grouped by Artifact Id</h3>
+  <h3>Reports</h3>
+  <h4>Grouped by Artifact Id</h4>
 
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
-      <th>Artifact Id</th>
       <th>Group Id</th>
+      <th>Artifact Id</th>
       <th>Number of Reports</th>
       <th>View</th>
     </tr>
@@ -58,8 +59,8 @@
     <tbody>
     <c:forEach items="${reports}" var="report">
       <tr>
-        <td><c:out value="${report.artifactId}"/></td>
         <td><c:out value="${report.groupId}"/></td>
+        <td><c:out value="${report.artifactId}"/></td>
         <td><c:out value="${report.number}"/></td>
         <td><a href="reports?artifactid=${report.artifactId}&groupid=${report.groupId}"><i class="icon-eye-open"></i></a></td>
       </tr>

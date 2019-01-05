@@ -29,8 +29,8 @@ public class HomeController {
     	NexusUtils nexusUtils = new NexusUtils();
     	Vector<Report> reports;
     	
-		reports = nexusUtils.readAllReports("http://nexus.com", "collaudodevopsnexus", "collaudodevopsnexus1234");
-		//reports = nexusUtils.readAllReports();
+		//reports = nexusUtils.readAllReports("http://nexus.com", "collaudodevopsnexus", "collaudodevopsnexus1234");
+		reports = nexusUtils.readAllReports();
 		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
     		reportsBean.addReport(reports.get(nIndex));	
     	}

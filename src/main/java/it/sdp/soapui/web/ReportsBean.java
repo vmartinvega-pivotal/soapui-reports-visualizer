@@ -12,6 +12,8 @@ public class ReportsBean {
 	private ArrayList<Report> reports = new ArrayList<Report>();
 	
 	private ArrayList<Report> artifactsReports = new ArrayList<Report>();
+	
+	private Map<String, ArrayList<Report>> reportsByGroupIdArfifactId = new HashMap<String, ArrayList<Report>>(); 
     
     public void addReport(Report report) {
     	reports.add(report);
@@ -40,6 +42,22 @@ public class ReportsBean {
 
     public List<Report> findAll(int firstResult, int maxResults) {
     	return genericFindAllArtifacts(reports, firstResult, maxResults);
+    }
+    
+    private synchronized ArrayList<Report> getReporstByGroupIdArtifactId(String groupId, String artifactId){
+    	ArrayList<Report> result = reportsByGroupIdArfifactId.get(groupId + artifactId);
+    	if(result == null) {
+     		ArrayList<Report> reportList = new ArrayList<Report>();
+    		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
+        		Report report = reports.get(nIndex);
+        		if(report.getArtifactId().equals(artifactId) && report.getGroupId().equals(groupId)) {
+        			reportList.add(report);
+        		}
+    		}
+    		reportsByGroupIdArfifactId.put(groupId + artifactId, reportList);
+    		result = reportList;
+    	}
+    	return result;
     }
     
     private synchronized ArrayList<Report> getDistinctArtifacts() {
@@ -74,16 +92,17 @@ public class ReportsBean {
         return reports.size();
     }
 
-    public int count(String field, String searchTerm) {
-       return 0;
+    public int count(String groupId, String artifactId) {
+       return getReporstByGroupIdArtifactId(groupId, artifactId).size();
     }
 
-    public List<Report> findRange(String field, String searchTerm, int firstResult, int maxResults) {
-    	return new ArrayList<Report>();
+    public List<Report> findRange(String groupId, String artifactId, int firstResult, int maxResults) {
+    	return genericFindAllArtifacts(getReporstByGroupIdArtifactId(groupId, artifactId), firstResult, maxResults);
     }
 
     public void clean() {
     	reports.clear();
     	artifactsReports.clear();
+    	reportsByGroupIdArfifactId.clear();
     }
 }

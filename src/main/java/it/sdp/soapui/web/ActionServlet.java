@@ -35,17 +35,14 @@ public class ActionServlet extends HttpServlet {
         String groupId = request.getParameter("groupid");
         String artifactId = request.getParameter("artifactid");
 
-        String key = request.getParameter("key");
-        String field = request.getParameter("field");
-
         int count = 0;
 
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(artifactId)) {
             count = reportsBean.countAll();
-            key = "";
-            field = "";
+            groupId = "";
+            artifactId = "";
         } else {
-            count = reportsBean.count(field, key);
+            count = reportsBean.count(groupId, artifactId);
         }
 
         int page = 1;
@@ -71,10 +68,10 @@ public class ActionServlet extends HttpServlet {
         int start = (page - 1) * PAGE_SIZE;
         List<Report> range;
 
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(artifactId)) {
             range = reportsBean.findAll(start, PAGE_SIZE);
         } else {
-            range = reportsBean.findRange(field, key, start, PAGE_SIZE);
+            range = reportsBean.findRange(groupId, artifactId, start, PAGE_SIZE);
         }
 
         int end = start + range.size();
@@ -85,8 +82,6 @@ public class ActionServlet extends HttpServlet {
         request.setAttribute("page", page);
         request.setAttribute("pageCount", pageCount);
         request.setAttribute("reports", range);
-        request.setAttribute("key", key);
-        request.setAttribute("field", field);
         request.setAttribute("artifactid", artifactId);
         request.setAttribute("groupid", groupId);
 
