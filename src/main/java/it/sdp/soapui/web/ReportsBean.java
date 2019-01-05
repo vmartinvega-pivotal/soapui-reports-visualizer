@@ -45,7 +45,7 @@ public class ReportsBean {
     private synchronized ArrayList<Report> getDistinctArtifacts() {
 
     	if (artifactsReports.size() == 0) {
-    		Map artifacts = new HashMap();
+    		Map<String, Report> artifacts = new HashMap<String, Report>();
     		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
         		Report report = reports.get(nIndex);
         		if (!artifacts.containsKey(report.getGroupId() + report.getArtifactId())) {

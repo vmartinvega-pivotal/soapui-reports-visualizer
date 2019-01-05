@@ -12,6 +12,7 @@ public class Report implements Serializable {
     private String environment;
     private int number;
     private String date;
+    private String version;
     private boolean successful = true;
     
 	public String getUrl() {
@@ -55,5 +56,11 @@ public class Report implements Serializable {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 }

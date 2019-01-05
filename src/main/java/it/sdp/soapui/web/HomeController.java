@@ -3,7 +3,11 @@ package it.sdp.soapui.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import it.sdp.soapui.SoapUtilException;
+import it.sdp.soapui.nexus.NexusUtils;
+
 import java.util.Map;
+import java.util.Vector;
 
 @Controller
 public class HomeController {
@@ -20,28 +24,17 @@ public class HomeController {
     }
 
     @GetMapping("/setup")
-    public String setup(Map<String, Object> model) {
+    public String setup(Map<String, Object> model) throws SoapUtilException {
     	reportsBean.clean();
+    	NexusUtils nexusUtils = new NexusUtils();
+    	Vector<Report> reports;
     	
-    	Report report = new Report ();
-    	report.setArtifactId("domiciliazioni");
-    	report.setGroupId("it.sdp");
-    	report.setEnvironment("coll");
-    	report.setUrl("https://algo.com");
-    	report.setNumber(1);
-    	report.setDate("2018-01-23 12:54");
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-    	reportsBean.addReport(report);
-
+		reports = nexusUtils.readAllReports("http://nexus.com", "collaudodevopsnexus", "collaudodevopsnexus1234");
+		//reports = nexusUtils.readAllReports();
+		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
+    		reportsBean.addReport(reports.get(nIndex));	
+    	}
+    	    	
         model.put("reports", reportsBean.getReports());
 
         return "setup";

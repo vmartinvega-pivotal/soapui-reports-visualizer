@@ -31,7 +31,6 @@ public class ActionServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
         
         String groupId = request.getParameter("groupid");
         String artifactId = request.getParameter("artifactid");

@@ -51,6 +51,7 @@
     <tr>
       <th>Environment</th>
       <th>Date</th>
+      <th>Version</th>
       <th>Status</th>
       <th>View</th>
     </tr>
@@ -60,6 +61,7 @@
       <tr>
         <td><c:out value="${report.environment}"/></td>
         <td><c:out value="${report.date}"/></td>
+        <td><c:out value="${report.version}"/></td>
         <c:choose>
 		    <c:when test="${report.successful}">
 				<td>Successfull</td>        
