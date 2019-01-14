@@ -15,35 +15,95 @@ public class NexusUtils {
 	
 	private static String SEPARATOR = "_";
 	
-	private static int FIELD_GROUP_ID = 0;
-	private static int FIELD_ARTIFACT_ID = 1;
-	private static int FIELD_DATE = 2;
-	private static int FIELD_ENVIRONMENT = 3;
-	private static int FIELD_VERSION = 4;
+	private static String FINAL_REPORTS = "FinalReports/html/report_";
 	
-	private static int FIELDS_WITH_VERSION = 5;
-	private static int FIELDS_WITHOUT_VERSION = 4;
+	private static String NEXUS_URL = "https://nexus-sdp.telecomitalia.local/nexus/repository/site/";
+	
+	private String parseDate(String date) {
+		String result = null;
+		
+		if(date.length() == 12) {
+			String year = date.substring(0, 4);
+			String month = date.substring(4, 6);
+			String day = date.substring(6, 8);
+			String hour = date.substring(8 ,10);
+			String minute = date.substring(10);
+			
+			result = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+		}
+		
+		return result;
+	}
 	
 	private Report parseUrl(String url) {
-		// GROUPID_ARTIFACTID_YYYYMMDDHHMM_ENVIRONMENT_VERSION.html
+		// FinalReports/html/GROUPID/ARTIFACTID/report_YYYYMMDDHHMM_ENVIRONMENT_VERSION.html
+		//https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/domiciliazioni-id55/FinalReports/html/report_201901072210_coll_1.2.2.html
+		//https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/domiciliazioni-id55/FinalReports/html/report_coll.html
 		
-		Report report = new Report();
-	
-		String[] params = StringUtils.splitPreserveAllTokens(url, SEPARATOR);
-		
-		// If the url has version it measns the report was successfull (version is not stored)
-		if (params.length == FIELDS_WITH_VERSION) {
-			report.setSuccessful(true);
-			report.setVersion(params[FIELD_VERSION]);
-		}else if (params.length == FIELDS_WITHOUT_VERSION) {
-			report.setSuccessful(false);
-		}else {
-			return null;
-		}
-		report.setGroupId(params[FIELD_GROUP_ID]);
-		report.setArtifactId(params[FIELD_ARTIFACT_ID]);
-		report.setDate(params[FIELD_DATE]);
-		report.setEnvironment(params[FIELD_ENVIRONMENT]);
+		Report report = null;
+    	if(url.contains(FINAL_REPORTS)) {
+    		String aux = url.substring(url.indexOf(NEXUS_URL) + NEXUS_URL.length());
+    		String[] params = StringUtils.splitPreserveAllTokens(aux, "/");
+    		if (params.length == 5) {
+    			String groupId = params[0];
+    			String artifactId = params[1];
+    			params = StringUtils.splitPreserveAllTokens(params[4], SEPARATOR);
+    			if ((params.length == 4) || (params.length == 2)){
+    				// This is a error report
+    				String date = null;
+    				if(params.length == 4) {
+    					date = parseDate(params[1]);
+        				if(date == null) {
+        					return report;
+        				}	
+    				}
+    				
+    				String environment = null;
+    				if(params .length == 4) {
+    					environment = params[2];
+    				// It is a error report
+    				}else {
+    					environment = params[1];
+    					if(environment.contains(".html")) {
+    						environment = environment.substring(0,  ".html".length() - 1);
+    					}else {
+    						// Skip no acaba en .html
+    						return report;
+    					}
+    				}
+    				
+    				String version = null;
+    				if (params.length == 4) {
+    					version = params[3];
+    					if (version.contains(".html")) {
+    						version = version.substring(0,  ".html".length());
+    					}else {
+    						// Skip no acaba en .html
+    						return report;
+    					}
+    				}
+    				report = new Report();
+    				report.setGroupId(groupId);
+    				report.setArtifactId(artifactId);
+    				report.setDate(date);
+    				report.setEnvironment(environment);
+    				report.setUrl(url);
+    				if(version != null) {
+    					report.setVersion(version);	
+    					report.setSuccessful(true);
+    				}else {
+    					report.setSuccessful(false);
+    				}
+    				
+    			}else {
+    				//Skip el formato debe ser YYYYMMDDHHMM_ENVIRONMENT_VERSION.html
+    			}
+    		}else {
+    			//Skip (el formato debe ser FinalReports/html/GROUPID/ARTIFACTID/YYYYMMDDHHMM_ENVIRONMENT_VERSION.html
+    		}
+    	}else {
+    		// Skip
+    	}
 		
 		return report;
 	}
@@ -51,25 +111,10 @@ public class NexusUtils {
 	public Vector<Report> readAllReports() throws SoapUtilException {
 		Vector<Report> result = new Vector<Report>();
 		
-		result.add(createReport("it.sdp", "domiciliazioni", "coll", "https://algo.com", "2018-01-23 12:54", "1.1.2"));
-		result.add(createReport("it.sdp", "domiciliazioni", "coll", "https://algo.com", "2018-01-24 12:54", "1.1.2"));
-		result.add(createReport("it.sdp", "domiciliazioni2", "coll", "https://algo.com", "2018-01-25 12:54", "1.1.2"));
+		result.add(parseUrl("https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/domiciliazioni-id55/FinalReports/html/report_coll.html"));
+		result.add(parseUrl("https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/domiciliazioni-id55/FinalReports/html/report_201901072210_coll_1.2.2.html"));
     	
     	return result;
-	}
-	
-	private Report createReport(String groupId, String artifactId, String env, String url, String date, String version) {
-		Report report = new Report();
-		
-		report.setArtifactId(artifactId);
-    	report.setGroupId(groupId);
-    	report.setEnvironment(env);
-    	report.setUrl(url);
-    	report.setNumber(1);
-    	report.setDate(date);
-    	report.setVersion(version);
-    	
-		return report;
 	}
 			
 	public Vector<Report> readAllReports(String url, String username, String password) throws SoapUtilException {
@@ -85,7 +130,7 @@ public class NexusUtils {
         	while (true) {
         		for (int index=0; index< assets.getItems().size(); index++){
         			Item item = assets.getItems().get(index);
-        			if (item.getDownloadUrl().trim().contains("FinalReports/html/")) {
+        			if (item.getDownloadUrl().trim().contains(FINAL_REPORTS)) {
         				Report report = parseUrl(item.getDownloadUrl());
         				if(report != null) {
         					result.add(report);	

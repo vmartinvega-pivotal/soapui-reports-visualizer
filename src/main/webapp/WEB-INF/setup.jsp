@@ -34,7 +34,19 @@
       <a class="btn btn-navbar" data-toggle="collapse"
          data-target=".nav-collapse"> <span class="icon-bar"></span> <span
           class="icon-bar"></span> <span class="icon-bar"></span>
-      </a> <a class="brand" href="#">Home</a>
+      </a> 
+      <a class="brand" href="/">Home</a>
+       <c:choose>
+		<c:when test="${requestScope.initialized}">
+			<a class="brand" href="setup">Refresh</a>
+		</c:when>    
+		<c:otherwise>
+			<a class="brand" href="setup">Load</a>
+		</c:otherwise>
+  	  </c:choose>
+  	  <c:if test="${requestScope.initialized}">
+	  		<a class="brand" href="artifacts">Reports</a>
+	  </c:if>
       <!--/.nav-collapse -->
     </div>
   </div>
@@ -42,8 +54,9 @@
 
 <div class="container">
 
-  <h3>The reports were loaded from nexus</h3>
-  <a href="/">Home</a>
+  <h3>There were loaded <c:out value="${requestScope.reports}"/> reports from nexus</h3><br/>
+  <p>Click the <b>"Refresh"</b> link to clean the reports previously loaded and reads them again from nexus</p>
+  <p>Click the <b>"Reports"</b> link to navigate the loaded reports from nexus</p>
 </div>
 <!-- /container -->
 </body>

@@ -14,13 +14,19 @@ public class ReportsBean {
 	private ArrayList<Report> artifactsReports = new ArrayList<Report>();
 	
 	private Map<String, ArrayList<Report>> reportsByGroupIdArfifactId = new HashMap<String, ArrayList<Report>>(); 
+	
+	private boolean initialized = false;
+	
+	public synchronized boolean getInitialized() {
+		return initialized;
+	}
+	
+	public synchronized void setInitialized(boolean value) {
+		this.initialized = value;
+	}
     
     public void addReport(Report report) {
     	reports.add(report);
-    }
-
-    public List<Report> getReports() {
-    	return reports;
     }
     
     private List<Report> genericFindAllArtifacts(ArrayList<Report> reports, int firstResult, int maxResults) {

@@ -19,7 +19,9 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Map<String, Object> model) {
+    	model.put("initialized", reportsBean.getInitialized());
+    	
         return "index";
     }
 
@@ -29,13 +31,17 @@ public class HomeController {
     	NexusUtils nexusUtils = new NexusUtils();
     	Vector<Report> reports;
     	
-		//reports = nexusUtils.readAllReports("http://nexus.com", "collaudodevopsnexus", "collaudodevopsnexus1234");
-		reports = nexusUtils.readAllReports();
+		reports = nexusUtils.readAllReports("https://nexus-sdp.telecomitalia.local/nexus/service/siesta/rest/beta/assets?repositoryId=site", "collaudodevopsnexus", "collaudodevopsnexus1234");
+		//reports = nexusUtils.readAllReports();
 		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
     		reportsBean.addReport(reports.get(nIndex));	
     	}
+		
+		reportsBean.setInitialized(true);
+		
+		model.put("initialized", reportsBean.getInitialized());
     	    	
-        model.put("reports", reportsBean.getReports());
+        model.put("reports", reportsBean.countAll());
 
         return "setup";
     }

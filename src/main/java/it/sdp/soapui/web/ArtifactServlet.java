@@ -65,6 +65,7 @@ public class ArtifactServlet extends HttpServlet {
         request.setAttribute("page", page);
         request.setAttribute("pageCount", pageCount);
         request.setAttribute("reports", range);
+        request.setAttribute("initialized", reportsBean.getInitialized());
         
         request.getRequestDispatcher("WEB-INF/artifacts.jsp").forward(request, response);
     }

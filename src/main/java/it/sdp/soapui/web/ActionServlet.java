@@ -84,6 +84,7 @@ public class ActionServlet extends HttpServlet {
         request.setAttribute("reports", range);
         request.setAttribute("artifactid", artifactId);
         request.setAttribute("groupid", groupId);
+        request.setAttribute("initialized", reportsBean.getInitialized());
 
         request.getRequestDispatcher("WEB-INF/reports.jsp").forward(request, response);
     }
