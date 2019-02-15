@@ -1,5 +1,9 @@
 package it.sdp.soapui.nexus;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
@@ -116,7 +120,38 @@ public class NexusUtils {
     	
     	return result;
 	}
+	
+	// If exists a report with the same version and environment gets the latest one
+	private Vector<Report> addReport(Vector<Report> reports, Report report) {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+
+		boolean addReport = true;
+		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
+			Report rep = reports.get(nIndex);
+			if ((rep.getGroupId().equals(report.getGroupId())) && (rep.getArtifactId().equals(report.getArtifactId()))){
+				if ((rep.getVersion() != null && rep.getVersion().equals(report.getVersion())) && (rep.getEnvironment() != null && rep.getEnvironment().equals(report.getEnvironment()))){
+					try {
+						Date date1 = format.parse(rep.getDate());
+						Date date2 = format.parse(report.getDate());
+						if (date2.after(date1)) {
+							reports.remove(nIndex);
+							break;
+						}else {
+							addReport = false;
+						}
+					} catch (ParseException e) {
+					}
+				}
+			}
 			
+		}
+		if (addReport) {
+			reports.add(report);	
+		}
+		
+		return reports;
+	}
+	
 	public Vector<Report> readAllReports(String url, String username, String password) throws SoapUtilException {
 		Vector<Report> result = new Vector<Report>();
 		GetTest getTest = new GetTest("", url, new HttpTestCaseHeadersImpl(), "", HttpStatus.OK);
@@ -133,7 +168,14 @@ public class NexusUtils {
         			if (item.getDownloadUrl().trim().contains(FINAL_REPORTS)) {
         				Report report = parseUrl(item.getDownloadUrl());
         				if(report != null) {
-        					result.add(report);	
+        					GetTest getTestFake = new GetTest("", report.getUrl(), new HttpTestCaseHeadersImpl(), "", HttpStatus.OK);
+        					getTestFake.setUsername(username);
+        					getTestFake.setPassword(password);
+         			    	String responseFake = httpUtils.sendGetAndCheckHttpStatus(getTestFake);
+         			    	if (responseFake.contains("No Tests were provided")) {
+         			    		report.setFake(true);
+         			    	}
+        					result = addReport(result, report);
         				}
         			}
         		}

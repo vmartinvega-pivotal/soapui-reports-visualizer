@@ -14,7 +14,7 @@ public class ArtifactServlet extends HttpServlet {
 
     private static final long serialVersionUID = -5639176047021911038L;
 
-    public static int PAGE_SIZE = 5;
+    public static int PAGE_SIZE = 10;
 
     @EJB
     private ReportsBean reportsBean;

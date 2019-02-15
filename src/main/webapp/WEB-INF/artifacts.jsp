@@ -62,7 +62,7 @@
 		  <table class="table table-striped table-bordered">
 		    <thead>
 		    <tr>
-		      <th>Group Id</th>
+		      <!-- <th>Group Id</th>-->
 		      <th>Artifact Id</th>
 		      <th>Number of Reports</th>
 		      <th>View</th>
@@ -71,7 +71,7 @@
 		    <tbody>
 		    <c:forEach items="${reports}" var="report">
 		      <tr>
-		        <td><c:out value="${report.groupId}"/></td>
+		        <!-- <td><c:out value="${report.groupId}"/></td>-->
 		        <td><c:out value="${report.artifactId}"/></td>
 		        <td><c:out value="${report.number}"/></td>
 		        <td><a href="reports?artifactid=${report.artifactId}&groupid=${report.groupId}"><i class="icon-eye-open"></i></a></td>
@@ -81,11 +81,11 @@
 		  </table>
 		  <c:if test="${count > 0}">
 		    <c:if test="${page > 1}">
-		      <a href="<c:url value="reports"><c:param name="page" value="${page - 1}"/></c:url>">&lt; Prev</a>&nbsp;
+		      <a href="<c:url value="artifacts"><c:param name="page" value="${page - 1}"/></c:url>">&lt; Prev</a>&nbsp;
 		    </c:if>
 		    Showing records ${start} to ${end} of ${count}
 		    <c:if test="${page < pageCount}">
-		      &nbsp;<a href="<c:url value="reports"><c:param name="page" value="${page + 1}"/></c:url>">Next &gt;</a>
+		      &nbsp;<a href="<c:url value="artifacts"><c:param name="page" value="${page + 1}"/></c:url>">Next &gt;</a>
 		    </c:if>
 		  </c:if>
 	</c:when>    

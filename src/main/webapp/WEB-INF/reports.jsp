@@ -78,6 +78,9 @@
 	        <td><c:out value="${report.date}"/></td>
 	        <td><c:out value="${report.version}"/></td>
 	        <c:choose>
+	        	<c:when test="${report.fake}">
+					<td>Successfull - Fake</td>        
+			    </c:when> 
 			    <c:when test="${report.successful}">
 					<td>Successfull</td>        
 			    </c:when>    

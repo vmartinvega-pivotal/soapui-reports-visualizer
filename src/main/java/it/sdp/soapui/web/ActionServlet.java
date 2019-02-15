@@ -15,7 +15,7 @@ public class ActionServlet extends HttpServlet {
 
     private static final long serialVersionUID = -5832176047021911038L;
 
-    public static int PAGE_SIZE = 5;
+    public static int PAGE_SIZE = 10;
 
     @EJB
     private ReportsBean reportsBean;
@@ -38,7 +38,7 @@ public class ActionServlet extends HttpServlet {
         int count = 0;
 
         if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(artifactId)) {
-            count = reportsBean.countAll();
+            count = reportsBean.countAllArtifacts();
             groupId = "";
             artifactId = "";
         } else {
@@ -69,7 +69,7 @@ public class ActionServlet extends HttpServlet {
         List<Report> range;
 
         if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(artifactId)) {
-            range = reportsBean.findAll(start, PAGE_SIZE);
+            range = reportsBean.findAllArtifacts(start, PAGE_SIZE);
         } else {
             range = reportsBean.findRange(groupId, artifactId, start, PAGE_SIZE);
         }
