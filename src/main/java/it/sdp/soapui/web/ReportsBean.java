@@ -42,58 +42,85 @@ public class ReportsBean {
     	return result;
     }
     
-    
+    public List<Report> findAllArtifacts(int firstResult, int maxResults, String regex) {
+    	return genericFindAllArtifacts(getDistinctArtifacts(regex), firstResult, maxResults);
+    }
+        
     public List<Report> findAllArtifacts(int firstResult, int maxResults) {
-    	return genericFindAllArtifacts(getDistinctArtifacts(), firstResult, maxResults);
+    	return findAllArtifacts(firstResult, maxResults, null);
     }
 
     public List<Report> findAll(int firstResult, int maxResults) {
     	return genericFindAllArtifacts(reports, firstResult, maxResults);
     }
     
-    private synchronized ArrayList<Report> getReporstByGroupIdArtifactId(String groupId, String artifactId){
-    	ArrayList<Report> result = reportsByGroupIdArfifactId.get(groupId + artifactId);
-    	if(result == null) {
+    private synchronized ArrayList<Report> getReporstByGroupIdArtifactId(String groupId, String artifactId, String environment){
+    	//ArrayList<Report> result = reportsByGroupIdArfifactId.get(groupId + artifactId);
+    	//if(result == null) {
      		ArrayList<Report> reportList = new ArrayList<Report>();
     		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
         		Report report = reports.get(nIndex);
         		if(report.getArtifactId().equals(artifactId) && report.getGroupId().equals(groupId)) {
-        			reportList.add(report);
+        			if((environment == null) || (report.getEnvironment().contains(environment))) {
+        				reportList.add(report);	
+        			}
         		}
     		}
     		reportsByGroupIdArfifactId.put(groupId + artifactId, reportList);
-    		result = reportList;
+    		//result = reportList;
+    	//}
+    	//Collections.sort(reportList);
+    	//return result;
+    	Collections.sort(reportList);
+    	return reportList;
+    }
+    
+    private synchronized ArrayList<Report> getReporstByGroupIdArtifactId(String groupId, String artifactId){
+    	return getReporstByGroupIdArtifactId(groupId, artifactId, null);
+    }
+    
+    private boolean match (String regex, String value) {
+    	boolean result = true;
+    	
+    	if(regex != null) {
+    		if(!value.contains(regex)) {
+    			return false;
+    		}
     	}
-    	Collections.sort(result);
     	return result;
     }
     
-    private synchronized ArrayList<Report> getDistinctArtifacts() {
+    private synchronized ArrayList<Report> getDistinctArtifacts(String regexArtifact) {
 
-    	if (artifactsReports.size() == 0) {
+    	//if (artifactsReports.size() == 0) {
+    	artifactsReports.clear();
     		Map<String, Report> artifacts = new HashMap<String, Report>();
     		for (int nIndex = 0; nIndex < reports.size(); nIndex++) {
         		Report report = reports.get(nIndex);
         		if (!artifacts.containsKey(report.getGroupId() + report.getArtifactId())) {
-        			Report artifactReport = new Report();
-        			artifactReport.setArtifactId(report.getArtifactId());
-        			artifactReport.setGroupId(report.getGroupId());
-        			artifactReport.setNumber(1);
-        			artifacts.put(report.getGroupId() + report.getArtifactId(), artifactReport);
+        			if (match (regexArtifact, report.getArtifactId())) {
+        				Report artifactReport = new Report();
+            			artifactReport.setArtifactId(report.getArtifactId());
+            			artifactReport.setGroupId(report.getGroupId());
+            			artifactReport.setNumber(1);
+            			artifacts.put(report.getGroupId() + report.getArtifactId(), artifactReport);	
+        			}
         		}else {
-        			Report auxArtifactReport = (Report) artifacts.get(report.getGroupId() + report.getArtifactId());
-        			auxArtifactReport.setNumber(auxArtifactReport.getNumber()+1);
+        			if (match (regexArtifact, report.getArtifactId())) {
+        				Report auxArtifactReport = (Report) artifacts.get(report.getGroupId() + report.getArtifactId());
+            			auxArtifactReport.setNumber(auxArtifactReport.getNumber()+1);
+        			}
         		}
         	}	
     		artifactsReports = new ArrayList<Report>(artifacts.values());
-    	}
+    	//}
     	
     	return artifactsReports;
     }
     
     // Counts all distinct artifacts
-    public int countAllArtifacts() {
-    	return getDistinctArtifacts().size();
+    public int countAllArtifacts(String regex) {
+    	return getDistinctArtifacts(regex).size();
     }
     
     public int countAll() {

@@ -117,7 +117,10 @@ public class NexusUtils {
 		
 		result.add(parseUrl("https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/domiciliazioni-id55/FinalReports/html/report_coll.html"));
 		result.add(parseUrl("https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/domiciliazioni-id55/FinalReports/html/report_201901072210_coll_1.2.2.html"));
-    	
+		for (int nIndex = 0; nIndex < 12; nIndex++) {
+			result.add(parseUrl("https://nexus-sdp.telecomitalia.local/nexus/repository/site/com.tim.sdp/test-id" + nIndex + "/FinalReports/html/report_201901072210_coll_1.0." + nIndex + ".html"));
+		}
+				
     	return result;
 	}
 	

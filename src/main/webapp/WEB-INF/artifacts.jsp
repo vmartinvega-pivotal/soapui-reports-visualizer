@@ -48,6 +48,13 @@
   	  <c:if test="${initialized}">
 	  		<a class="brand" href="artifacts">Reports</a>
 	  </c:if>
+	  <form class="navbar-form pull-right">
+        <select name="field">
+          <option value="artifact">Artifact</option>
+        </select> 
+        <input type="text" name="key" size="20"/>
+        <button type="submit" class="btn">Search</button>
+      </form>
       <!--/.nav-collapse -->
     </div>
   </div>
@@ -81,11 +88,11 @@
 		  </table>
 		  <c:if test="${count > 0}">
 		    <c:if test="${page > 1}">
-		      <a href="<c:url value="artifacts"><c:param name="page" value="${page - 1}"/></c:url>">&lt; Prev</a>&nbsp;
+		      <a href="<c:url value="artifacts"><c:param name="key" value="${key}"/><c:param name="field" value="${field}"/><c:param name="page" value="${page - 1}"/></c:url>">&lt; Prev</a>&nbsp;
 		    </c:if>
 		    Showing records ${start} to ${end} of ${count}
 		    <c:if test="${page < pageCount}">
-		      &nbsp;<a href="<c:url value="artifacts"><c:param name="page" value="${page + 1}"/></c:url>">Next &gt;</a>
+		      &nbsp;<a href="<c:url value="artifacts"><c:param name="key" value="${key}"/><c:param name="field" value="${field}"/><c:param name="page" value="${page + 1}"/></c:url>">Next &gt;</a>
 		    </c:if>
 		  </c:if>
 	</c:when>    

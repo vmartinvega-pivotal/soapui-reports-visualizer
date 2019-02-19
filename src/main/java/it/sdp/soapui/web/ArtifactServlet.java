@@ -28,10 +28,18 @@ public class ArtifactServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         process(request, response);
     }
+    
+    private void filterArtifacts(String regex) {
+    	
+    }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int count = reportsBean.countAllArtifacts();
-
+        
+        String field = request.getParameter("field");
+        String key = request.getParameter("key");
+        
+        int count = reportsBean.countAllArtifacts(key);
+        
         int page = 1;
 
         try {
@@ -55,7 +63,7 @@ public class ArtifactServlet extends HttpServlet {
         int start = (page - 1) * PAGE_SIZE;
         List<Report> range;
 
-        range = reportsBean.findAllArtifacts(start, PAGE_SIZE);
+        range = reportsBean.findAllArtifacts(start, PAGE_SIZE, key);
 
         int end = start + range.size();
 
@@ -65,6 +73,8 @@ public class ArtifactServlet extends HttpServlet {
         request.setAttribute("page", page);
         request.setAttribute("pageCount", pageCount);
         request.setAttribute("reports", range);
+        request.setAttribute("field", field);
+        request.setAttribute("key", key);
         request.setAttribute("initialized", reportsBean.getInitialized());
         
         request.getRequestDispatcher("WEB-INF/artifacts.jsp").forward(request, response);

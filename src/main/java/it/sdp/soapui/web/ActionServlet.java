@@ -34,11 +34,15 @@ public class ActionServlet extends HttpServlet {
         
         String groupId = request.getParameter("groupid");
         String artifactId = request.getParameter("artifactid");
+        
+        // These parameters are optional
+        String field = request.getParameter("field");
+        String key = request.getParameter("key");
 
         int count = 0;
 
         if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(artifactId)) {
-            count = reportsBean.countAllArtifacts();
+            count = reportsBean.countAllArtifacts(null);
             groupId = "";
             artifactId = "";
         } else {

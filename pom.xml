@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.sdp</groupId>
     <artifactId>reports-visualizer</artifactId>
-    <packaging>war</packaging>
+    <!-- <packaging>war</packaging>-->
     <version>1.1.0-SNAPSHOT</version>
     <name>SoapUi :: Reports :: Visualizer</name>
 
